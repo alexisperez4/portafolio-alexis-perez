@@ -1,14 +1,27 @@
-npx tsc --init
+## Steps for run server by dev
 
-Estructura del proyecto.
-client
-dist
-node_modules
-src
-    -app.ts
-.env
-.gitignore
-package-lock.json
-package.json
-README.md
-tsconfig.json
+Clone the repo and install the dependencies.
+
+```bash
+git clone https://github.com/alexisperez4/portafolio-alexis-perez.git
+cd portafolio-alexis-perez
+
+```
+
+```bash
+npm install
+```
+
+Set up environment variable
+
+```bash
+PORT=8080
+```
+
+Start the express server
+```bash
+npm run dev
+```
+
+Final Step
+Open [http://localhost:8080/](http://localhost:8080/) 
