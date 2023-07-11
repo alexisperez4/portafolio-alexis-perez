@@ -7,7 +7,7 @@ const port = process.env.PORT;
 
 
 // Task Routes
-app.use('/tasks', taskRoutes);
+app.use('/task', taskRoutes);
 
 // Handle errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
