@@ -16,3 +16,5 @@ dist/
 #todo list
 TODO
 
+# logs
+logs/app.log
