@@ -1,14 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../database/database-config';
+import { getAllTasks } from '../controllers/tasks.controller';
 
 export const taskRoutes: Router = Router();
 
 // Get all task
-taskRoutes.get('/', async (req: Request, res: Response) => {
-  const { rows } = await db.query(`select now();`);
-  console.log(rows)
-  res.send('Get all tasks')
-});
+taskRoutes.get('/', getAllTasks);
 
 // Get task by ID
 taskRoutes.get('/:task_id', (req: Request, res: Response) => {
