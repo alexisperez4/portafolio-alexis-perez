@@ -5,6 +5,9 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
+//Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Task Routes
 app.use('/task', taskRoutes);
