@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from "../database/database-config";
 import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
+import { createtaskSchema, taskIdSchema, updateTaskSchema } from '../validators/task.validator';
 
 
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,13 +18,19 @@ export const getAllTasks = async (req: Request, res: Response, next: NextFunctio
 
 
 export const getTaskByID = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } = taskIdSchema.validate(req.params);
+    if(error){
+        logger.error(error);
+        return next(new AppError(400, error.message));
+    }
+    
     try {
         const { task_id } = req.params;
 
         const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
         const task = result.rows;
         res.json(task);
-        
+
     } catch (error) {
         logger.error(error);
         next(new AppError(500, 'Internal Server Error'));
@@ -31,6 +38,12 @@ export const getTaskByID = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const createTask = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } = createtaskSchema.validate(req.body);
+    if (error) {
+        return next(new AppError(400, error.message));
+    }
+
+
     try {
         const { task_title, task_description, status_id } = req.body;
         const result = await db.query(`
@@ -46,10 +59,15 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const updateTask =async (req: Request, res: Response, next: NextFunction) => {
+export const updateTask = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } =  updateTaskSchema.validate(req.body);
+    if(error){
+        return next(new AppError(400, error.message));
+    }   
+
     try {
         const { task_id, task_title, task_description, status_id } = req.body;
-        
+
         const result = await db.query(`
             UPDATE task SET task_title = $1, task_description = $2, status_id = $3
             WHERE task_id = $4 RETURNING *`,
@@ -57,15 +75,20 @@ export const updateTask =async (req: Request, res: Response, next: NextFunction)
         );
         const updated_task = result.rows;
         res.json(updated_task)
-        
+
     } catch (error) {
         logger.error(error);
         next(new AppError(500, 'Internal Server Error'));
     }
-    
+
 }
 
-export const deleteTask =async (req: Request, res: Response, next: NextFunction) => {
+export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } = taskIdSchema.validate(req.body);
+    if(error){
+        return next(new AppError(400, error.message));
+    }
+
     try {
         const { task_id } = req.body;
 
