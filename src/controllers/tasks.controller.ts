@@ -40,6 +40,7 @@ export const getTaskByID = async (req: Request, res: Response, next: NextFunctio
 export const createTask = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = createtaskSchema.validate(req.body);
     if (error) {
+        logger.error(`Create Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
     }
 
@@ -50,11 +51,12 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
             INSERT INTO task (task_title, task_description, status_id) 
             VALUES($1, $2, $3) RETURNING *`, [task_title, task_description, status_id]
         );
-        const task = result.rows;
+        const task = result.rows[0];
+        logger.info(`Task created successfully: ${task.task_id}`);
         res.json(task);
 
     } catch (error) {
-        logger.error(error);
+        logger.error(`Create Task DB Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
     }
 }
@@ -62,6 +64,7 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 export const updateTask = async (req: Request, res: Response, next: NextFunction) => {
     const { error } =  updateTaskSchema.validate(req.body);
     if(error){
+        logger.error(`Update Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
     }   
 
@@ -73,11 +76,12 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
             WHERE task_id = $4 RETURNING *`,
             [task_title, task_description, status_id, task_id]
         );
-        const updated_task = result.rows;
+        const updated_task = result.rows[0];
+        logger.info(`Task updated successfully: ${updated_task.task_id}`);
         res.json(updated_task)
 
     } catch (error) {
-        logger.error(error);
+        logger.error(`Update Task DB Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
     }
 
@@ -86,6 +90,7 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.body);
     if(error){
+        logger.error(`Delete Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
     }
 
@@ -96,11 +101,12 @@ export const deleteTask = async (req: Request, res: Response, next: NextFunction
             DELETE FROM task WHERE task_id = $1 RETURNING *`,
             [task_id]
         );
-        const deleted_task = result.rows;
+        const deleted_task = result.rows[0];
+        logger.info(`Task deleted successfully: ${deleted_task.task_id}`);
         res.json(deleted_task);
 
     } catch (error) {
-        logger.error(error);
+        logger.error(`Delete Task DB Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
     }
 }
