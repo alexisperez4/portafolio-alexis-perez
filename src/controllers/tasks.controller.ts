@@ -3,6 +3,7 @@ import { db } from "../database/database-config";
 import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 import { createtaskSchema, taskIdSchema, updateTaskSchema } from '../validators/task.validator';
+import { taskExists } from '../services/task.service';
 
 
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
@@ -19,13 +20,17 @@ export const getAllTasks = async (req: Request, res: Response, next: NextFunctio
 
 export const getTaskByID = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.params);
-    if(error){
+    if (error) {
         logger.error(error);
         return next(new AppError(400, error.message));
     }
-    
+
+    const { task_id } = req.params;
+    if (!(await taskExists({ task_id: Number(task_id) }))) {
+        return next(new AppError(404, 'Task not found'));
+    }
+
     try {
-        const { task_id } = req.params;
 
         const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
         const task = result.rows;
@@ -62,15 +67,18 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 }
 
 export const updateTask = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } =  updateTaskSchema.validate(req.body);
-    if(error){
+    const { error } = updateTaskSchema.validate(req.body);
+    if (error) {
         logger.error(`Update Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
-    }   
+    }
+
+    const { task_id, task_title, task_description, status_id } = req.body;
+    if (!(await taskExists({ task_id : Number(task_id) }))) {
+        return next(new AppError(404, 'Task not found'));
+    }
 
     try {
-        const { task_id, task_title, task_description, status_id } = req.body;
-
         const result = await db.query(`
             UPDATE task SET task_title = $1, task_description = $2, status_id = $3
             WHERE task_id = $4 RETURNING *`,
@@ -78,7 +86,7 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
         );
         const updated_task = result.rows[0];
         logger.info(`Task updated successfully: ${updated_task.task_id}`);
-        res.json(updated_task)
+        res.json(updated_task);
 
     } catch (error) {
         logger.error(`Update Task DB Error: ${error}`);
@@ -89,14 +97,17 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 
 export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.body);
-    if(error){
+    if (error) {
         logger.error(`Delete Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
     }
 
-    try {
-        const { task_id } = req.body;
+    const { task_id } = req.body;
+    if (!(await taskExists({ task_id: Number(task_id) }))) {
+        return next(new AppError(404, 'Task not found'));
+    }
 
+    try {
         const result = await db.query(`
             DELETE FROM task WHERE task_id = $1 RETURNING *`,
             [task_id]
