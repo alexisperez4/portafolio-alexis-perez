@@ -16,6 +16,12 @@ Set up environment variable
 
 ```bash
 PORT=8080
+PGUSER=
+PGHOST=
+PGDATABASE=
+PGPASSWORD=
+PGPORT=
+
 ```
 
 Start the express server
