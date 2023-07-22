@@ -18,7 +18,7 @@ export const getAllTasks = async (req: Request, res: Response, next: NextFunctio
 };
 
 
-export const getTaskByID = async (req: Request, res: Response, next: NextFunction) => {
+export const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.params);
     if (error) {
         logger.error(error);
@@ -95,7 +95,7 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 
 }
 
-export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteTaskById = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.body);
     if (error) {
         logger.error(`Delete Task Validation Error: ${error.message}`);

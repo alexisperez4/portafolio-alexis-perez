@@ -1,14 +1,15 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../database/database-config';
-import { createTask, deleteTask, getAllTasks, getTaskByID, updateTask } from '../controllers/tasks.controller';
+import { createTask, deleteTaskById, getAllTasks, getTaskById, updateTask } from '../controllers/tasks.controller';
 
 export const taskRoutes: Router = Router();
 
 taskRoutes.route('/')
   .get(getAllTasks)
-  .post(createTask);
+  .post(createTask)
+  .delete(deleteTaskById);
 
 taskRoutes.route('/:task_id')
-  .get(getTaskByID)
-  .put(updateTask)
-  .delete(deleteTask);
+  .get(getTaskById)
+  .put(updateTask);
+
