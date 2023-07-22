@@ -73,7 +73,8 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
         return next(new AppError(400, error.message));
     }
 
-    const { task_id, task_title, task_description, status_id } = req.body;
+    const task_id = req.params.task_id;
+    const { task_title, task_description, status_id } = req.body;
     if (!(await taskExists({ task_id : Number(task_id) }))) {
         return next(new AppError(404, 'Task not found'));
     }
@@ -96,13 +97,13 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 }
 
 export const deleteTaskById = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = taskIdSchema.validate(req.body);
+    const { task_id } = req.params;
+    const { error } = taskIdSchema.validate({ task_id });
     if (error) {
         logger.error(`Delete Task Validation Error: ${error.message}`);
         return next(new AppError(400, error.message));
     }
-
-    const { task_id } = req.body;
+    
     if (!(await taskExists({ task_id: Number(task_id) }))) {
         return next(new AppError(404, 'Task not found'));
     }
