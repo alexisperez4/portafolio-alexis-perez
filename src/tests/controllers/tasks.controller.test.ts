@@ -83,7 +83,7 @@ test('updateTask', async t => {
         status_id: 1
     }
 
-    const updated_task = await request(app).put(`/task/${task_to_update.task_id}`).send(task_to_update);
+    const updated_task = await request(app).put(`/task`).send(task_to_update);
 
     t.is(updated_task.status, 200);
     t.is(updated_task.body.task_id, task_to_update.task_id);

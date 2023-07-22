@@ -7,9 +7,9 @@ export const taskRoutes: Router = Router();
 taskRoutes.route('/')
   .get(getAllTasks)
   .post(createTask)
-  .delete(deleteTaskById);
+  .delete(deleteTaskById)
+  .put(updateTask);
 
 taskRoutes.route('/:task_id')
-  .get(getTaskById)
-  .put(updateTask);
+  .get(getTaskById);
 
