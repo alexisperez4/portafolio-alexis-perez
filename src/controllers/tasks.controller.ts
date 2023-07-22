@@ -33,7 +33,7 @@ export const getTaskByID = async (req: Request, res: Response, next: NextFunctio
     try {
 
         const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
-        const task = result.rows;
+        const task = result.rows[0];
         res.json(task);
 
     } catch (error) {
