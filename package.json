@@ -23,6 +23,7 @@
     "@types/node": "^20.4.1",
     "@types/pg": "^8.10.2",
     "concurrently": "^8.2.0",
+    "kanel": "^3.4.3",
     "nodemon": "^2.0.22",
     "typescript": "^5.1.6"
   }
