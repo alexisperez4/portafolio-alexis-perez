@@ -4,6 +4,7 @@ import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 import { createtaskSchema, taskIdSchema, updateTaskSchema } from '../validators/task.validator';
 import { taskExists } from '../services/task.service';
+import { TaskInitializer } from '../schemas/public/Task';
 
 
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +52,9 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 
 
     try {
-        const { task_title, task_description, task_status } = req.body;
+        const task_data: TaskInitializer = req.body;
+        const { task_title, task_description, task_status } = task_data;
+
         const result = await db.query(`
             INSERT INTO task (task_title, task_description, task_status) 
             VALUES($1, $2, $3) RETURNING *`, [task_title, task_description, task_status]
