@@ -51,10 +51,10 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 
 
     try {
-        const { task_title, task_description, status_id } = req.body;
+        const { task_title, task_description, task_status } = req.body;
         const result = await db.query(`
-            INSERT INTO task (task_title, task_description, status_id) 
-            VALUES($1, $2, $3) RETURNING *`, [task_title, task_description, status_id]
+            INSERT INTO task (task_title, task_description, task_status) 
+            VALUES($1, $2, $3) RETURNING *`, [task_title, task_description, task_status]
         );
         const task = result.rows[0];
         logger.info(`Task created successfully: ${task.task_id}`);
@@ -74,16 +74,16 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
     }
 
     const task_id = req.params.task_id;
-    const { task_title, task_description, status_id } = req.body;
+    const { task_title, task_description, task_status } = req.body;
     if (!(await taskExists({ task_id : Number(task_id) }))) {
         return next(new AppError(404, 'Task not found'));
     }
 
     try {
         const result = await db.query(`
-            UPDATE task SET task_title = $1, task_description = $2, status_id = $3
+            UPDATE task SET task_title = $1, task_description = $2, task_status = $3
             WHERE task_id = $4 RETURNING *`,
-            [task_title, task_description, status_id, task_id]
+            [task_title, task_description, task_status, task_id]
         );
         const updated_task = result.rows[0];
         logger.info(`Task updated successfully: ${updated_task.task_id}`);
