@@ -80,3 +80,15 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
         next(new AppError(500, 'Internal Server Error'));
     }
 };
+
+export const signOut = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.clearCookie('auth');
+      res.json({ message: 'User signed out successfully' });
+    } catch (error) {
+      logger.error(`SignOut Error: ${error}`);
+      next(new AppError(500, 'Internal Server Error'));
+    }
+  };
+  
+

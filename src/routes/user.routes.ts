@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signIn, signUp } from '../controllers/user.controller';
+import { signIn, signUp, signOut } from '../controllers/user.controller';
 
 export const userRoutes: Router = Router();
 
@@ -8,3 +8,6 @@ userRoutes.route('/signup')
 
 userRoutes.route('/signin')
   .post(signIn);
+
+userRoutes.route('/signout')
+  .post(signOut);
