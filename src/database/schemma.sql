@@ -5,9 +5,9 @@ CREATE TYPE user_role AS ENUM ('admin', 'user', 'guest');
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   user_email VARCHAR(50) UNIQUE NOT NULL,
-  user_password VARCHAR(50) NOT NULL,
-  first_name VARCHAR(50),
-  last_name VARCHAR(50),
+  user_password TEXT NOT NULL,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
   role user_role DEFAULT 'user'
 );
 

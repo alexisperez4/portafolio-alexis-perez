@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { taskRoutes } from './routes/tasks.routes';
+import { userRoutes } from './routes/user.routes';
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
@@ -11,6 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Task Routes
 app.use('/task', taskRoutes);
+
+// User Routes
+app.use('/user', userRoutes);
 
 // Handle errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

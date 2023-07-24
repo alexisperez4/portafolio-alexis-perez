@@ -4,7 +4,7 @@ import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 import { createtaskSchema, taskIdSchema, updateTaskSchema } from '../validators/task.validator';
 import { taskExists } from '../services/task.service';
-import { TaskInitializer } from '../schemas/public/Task';
+import { TaskInitializer } from '../types/public/Task';
 
 
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {

@@ -14,7 +14,7 @@ module.exports = {
   },
 
   preDeleteOutputFolder: true,
-  outputPath: './src/schemas',
+  outputPath: './src/types',
 
   customTypeMap: {
     'pg_catalog.tsvector': 'string',
