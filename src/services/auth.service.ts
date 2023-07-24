@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { logger } from '../utils/logger';
 import { AppError } from '../utils/AppError';
+import { UsersUserId } from '../types/public/Users';
+import jwt from 'jsonwebtoken';
 
 interface IEncryptPassword {
     user_password: string;
@@ -15,6 +17,37 @@ export const encryptPassword = async ({user_password, saltRounds = 10}: IEncrypt
         logger.error('Error encrypting password:', error);
         throw new AppError(500, 'Internal Server Error');
     }
+};
+
+interface IComparePassword {
+    user_password: string;
+    stored_password: string;
+}
+
+export const comparePassword = async ({user_password, stored_password}: IComparePassword) => {
+    try {
+        return await bcrypt.compare(user_password, stored_password);
+    } catch (error) {
+        throw new Error('Comparison failed');
+    }
+};
+
+
+interface IGenerateToken {
+    user_id: UsersUserId;
+}
+
+export const generateToken = ({user_id}: IGenerateToken) => {
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+        throw new Error('JWT Secret not configured');
+    }
+
+    const token = jwt.sign({ id: user_id }, secretKey, {
+        expiresIn: '2h',
+    });
+
+    return token;
 };
 
 
