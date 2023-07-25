@@ -96,6 +96,6 @@ export const signOut = async (req: Request, res: Response, next: NextFunction) =
       logger.error(`SignOut Error: ${error}`);
       next(new AppError(500, 'Internal Server Error'));
     }
-  };
+};
   
 
