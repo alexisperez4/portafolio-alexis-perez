@@ -1,7 +1,9 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { taskRoutes } from './routes/tasks.routes';
 import { userRoutes } from './routes/user.routes';
+import { authenticateJWT } from './middlewares/auth.middleware';
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
@@ -9,9 +11,10 @@ const port = process.env.PORT;
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Task Routes
-app.use('/task', taskRoutes);
+app.use('/task', authenticateJWT, taskRoutes);
 
 // User Routes
 app.use('/user', userRoutes);

@@ -51,7 +51,14 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
 
             if (password_match) {
                 // generate and send token to user
-                const token = generateToken({ user_id: user_data.user_id });
+                const token = generateToken({ 
+                    user_id: user_data.user_id,
+                    user_email: user_data.user_email,
+                    first_name: user_data.first_name,
+                    last_name: user_data.last_name,
+                    role: user_data.role,
+                });
+                
                 const cookie = serialize('auth', token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',

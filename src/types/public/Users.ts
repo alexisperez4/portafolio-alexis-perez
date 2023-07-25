@@ -14,9 +14,9 @@ export default interface Users {
 
   user_password: string;
 
-  first_name: string | null;
+  first_name: string;
 
-  last_name: string | null;
+  last_name: string;
 
   role: UserRole | null;
 }
@@ -30,9 +30,9 @@ export interface UsersInitializer {
 
   user_password: string;
 
-  first_name?: string | null;
+  first_name: string;
 
-  last_name?: string | null;
+  last_name: string;
 
   /** Default value: 'user'::user_role */
   role?: UserRole | null;
@@ -46,9 +46,9 @@ export interface UsersMutator {
 
   user_password?: string;
 
-  first_name?: string | null;
+  first_name?: string;
 
-  last_name?: string | null;
+  last_name?: string;
 
   role?: UserRole | null;
 }

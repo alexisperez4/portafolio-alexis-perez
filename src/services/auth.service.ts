@@ -3,6 +3,7 @@ import { logger } from '../utils/logger';
 import { AppError } from '../utils/AppError';
 import { UsersUserId } from '../types/public/Users';
 import jwt from 'jsonwebtoken';
+import UserRole from '../types/public/UserRole';
 
 interface IEncryptPassword {
     user_password: string;
@@ -35,15 +36,30 @@ export const comparePassword = async ({user_password, stored_password}: ICompare
 
 interface IGenerateToken {
     user_id: UsersUserId;
+    user_email: string;  
+    first_name: string;
+    last_name: string;
+    role: UserRole | null;
 }
 
-export const generateToken = ({user_id}: IGenerateToken) => {
+export const generateToken = ({
+    user_id, 
+    user_email, 
+    first_name, 
+    last_name, 
+    role
+}: IGenerateToken) => {
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
         throw new Error('JWT Secret not configured');
     }
-
-    const token = jwt.sign({ id: user_id }, secretKey, {
+    const token = jwt.sign({ 
+        user_id,
+        user_email,
+        first_name,
+        last_name,
+        role
+    }, secretKey, {
         expiresIn: '2h',
     });
 
