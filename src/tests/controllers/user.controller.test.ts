@@ -5,7 +5,7 @@ import { db } from '../../database/database-config';
 import { verify } from 'jsonwebtoken';
 
 const test_user = {
-    user_email: 'test@test.com',
+    user_email: 'test@usercontroller.com',
     user_password: 'testPassword',
     first_name: 'Test First Name',
     last_name: 'Test Last Name',
