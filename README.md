@@ -21,7 +21,8 @@ PGHOST=
 PGDATABASE=
 PGPASSWORD=
 PGPORT=
-
+JWT_SECRET=
+NODE_ENV=
 ```
 
 Start the express server
@@ -30,4 +31,4 @@ npm run dev
 ```
 
 Final Step
-Open [http://localhost:8080/](http://localhost:8080/) 
+Open [http://localhost:8080/user/signin](http://localhost:8080/user/signin) 
