@@ -1,17 +1,29 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import { taskRoutes } from './routes/tasks.routes';
+import { engine } from 'express-handlebars';
+import path from 'path';import { taskRoutes } from './routes/tasks.routes';
 import { userRoutes } from './routes/user.routes';
 import { authenticateJWT } from './middlewares/auth.middleware';
 dotenv.config();
 const app: Express = express();
-const port = process.env.PORT;
 
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// View engine setup
+app.engine('hbs', engine({ extname: '.hbs' }));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Static files
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.render('index', { title: 'My Express App', message: 'Hello!' });
+});
 
 // Task Routes
 app.use('/task', authenticateJWT, taskRoutes);

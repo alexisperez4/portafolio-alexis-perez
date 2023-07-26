@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/server.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc && ncp src/views dist/views && ncp src/public dist/public",
     "start": "node dist/server.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "test": "cross-env NODE_ENV=test ava"
@@ -18,6 +18,8 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-handlebars": "^7.1.0",
+    "handlebars": "^4.7.7",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.1",
     "pg": "^8.11.1",
@@ -36,6 +38,7 @@
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "kanel": "^3.4.3",
+    "ncp": "^2.0.0",
     "nodemon": "^2.0.22",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
