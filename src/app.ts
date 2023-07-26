@@ -2,7 +2,8 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
-import path from 'path';import { taskRoutes } from './routes/tasks.routes';
+import path from 'path';
+import { taskRoutes } from './routes/tasks.routes';
 import { userRoutes } from './routes/user.routes';
 import { authenticateJWT } from './middlewares/auth.middleware';
 dotenv.config();
@@ -19,7 +20,8 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/', (req, res) => {
   res.render('index', { title: 'My Express App', message: 'Hello!' });

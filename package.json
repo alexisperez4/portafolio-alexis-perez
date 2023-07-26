@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/server.js",
   "scripts": {
-    "build": "tsc && rsync -a --prune-empty-dirs --include='*/' --include='*.hbs' --include='*.html' --exclude='*' src/views/ dist/views/ && rsync -a --prune-empty-dirs --exclude='*.ts' --exclude='*.tsx' src/public/ dist/public/",
+    "build": "npx tsc",
     "start": "node dist/server.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "test": "cross-env NODE_ENV=test ava"
