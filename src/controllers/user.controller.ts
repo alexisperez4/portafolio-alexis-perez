@@ -98,4 +98,11 @@ export const signOut = async (req: Request, res: Response, next: NextFunction) =
     }
 };
   
-
+export const showSignUpForm = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.render('user/signup', { title: 'Sign Up' });
+    } catch (error) {
+        logger.error(`Show SignUp Form Error: ${error}`);
+        next(new AppError(500, 'Internal Server Error'));
+    }
+}

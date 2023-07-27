@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Portafolio Alexis', message: 'Hello World!!' });
+  res.render('home', { title: 'Portafolio Alexis', message: 'Welcome to Alexis Portfolio' });
 });
 
 // Task Routes
