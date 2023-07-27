@@ -18,10 +18,8 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
         if (token) {
             const user = verify(token, process.env.JWT_SECRET as string);
             req.user = user;
-            next();
-        } else {
-            res.sendStatus(401);
         }        
+        next();
     } catch (error) {
         logger.error(`Invalid Token. ${error}`);
         res.sendStatus(401);

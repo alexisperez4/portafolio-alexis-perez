@@ -18,7 +18,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          
+          {{#unless isAuthenticated}}
           <li class="nav-item">
             <a class="nav-link" href="/user/signup">Sign Up</a>
           </li>
@@ -26,12 +26,17 @@
           <li class="nav-item">
             <a class="nav-link" href="/user/signin">Log In</a>
           </li>
+          {{/unless}}
 
+          
+          {{#if isAuthenticated}}
           <li class="nav-item">
             <form action="/user/signout" method="post">
               <button type="submit" class="nav-link">LogOut</button>
             </form>
           </li>
+          {{/if}}
+
         </ul>
       </div>
     </div>

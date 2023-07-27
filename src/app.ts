@@ -13,6 +13,7 @@ const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(authenticateJWT);
 
 // View engine setup
 app.engine('hbs', engine({ extname: '.hbs' }));
@@ -24,11 +25,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Portafolio Alexis', message: 'Welcome to Alexis Portfolio' });
+  const isAuthenticated = req.user ? true : false;
+  res.render('home', { 
+    title: 'Portafolio Alexis', 
+    message: 'Welcome to Alexis Portfolio',
+    isAuthenticated
+  });
 });
 
 // Task Routes
-app.use('/task', authenticateJWT, taskRoutes);
+app.use('/task', taskRoutes);
 
 // User Routes
 app.use('/user', userRoutes);

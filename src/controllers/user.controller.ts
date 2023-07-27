@@ -109,7 +109,8 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
 export const signOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.clearCookie('auth');
-      res.json({ message: 'User signed out successfully' });
+      res.redirect('/');
+      
     } catch (error) {
       logger.error(`SignOut Error: ${error}`);
       next(new AppError(500, 'Internal Server Error'));
@@ -118,7 +119,8 @@ export const signOut = async (req: Request, res: Response, next: NextFunction) =
   
 export const showSignUpForm = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.render('user/signup', { title: 'Sign Up' });
+        const isAuthenticated = req.user ? true : false;
+        res.render('user/signup', { title: 'Sign Up', isAuthenticated });
     } catch (error) {
         logger.error(`Show SignUp Form Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
@@ -128,7 +130,8 @@ export const showSignUpForm = async (req: Request, res: Response, next: NextFunc
 
 export const showSignInForm = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.render('user/signin', { title: 'Sign In' });
+        const isAuthenticated = req.user ? true : false;
+        res.render('user/signin', { title: 'Sign In', isAuthenticated });
     } catch (error) {
         logger.error(`Show SignIn Form Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
