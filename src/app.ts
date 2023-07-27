@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
 import { engine } from 'express-handlebars';
 import path from 'path';
 import { taskRoutes } from './routes/tasks.routes';
@@ -12,6 +13,7 @@ const app: Express = express();
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(authenticateJWT);
 

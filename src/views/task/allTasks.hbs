@@ -9,6 +9,9 @@
             <p class="card-text">{{this.task_description}}</p>
             <p class="card-text"><small class="text-muted">{{this.task_status}}</small></p>
             <a href="/task/{{this.task_id}}" class="btn btn-primary">View Details</a>
+            <form action="/task/{{this.task_id}}?_method=DELETE" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
         </div>
     </div>
     {{/each}}
