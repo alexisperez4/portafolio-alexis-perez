@@ -19,9 +19,27 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
         const user_data: UsersInitializer = req.body;
         const { user_email, user_password, first_name, last_name, role } = user_data;
         const user = await createUser({ user_email, user_password, first_name, last_name, role });
-
         logger.info(`User registred successfully: ${user.user_id}`);
-        res.json({ message: 'User registred successfully' });
+
+        const token = generateToken({ 
+            user_id: user.user_id,
+            user_email: user.user_email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            role: user.role,
+        });
+
+        const cookie = serialize('auth', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 3600 * 2,
+            path: '/',
+        });
+
+        logger.info(`User logged successfully: ${user.user_id}`);
+        res.setHeader('Set-Cookie', cookie);
+        res.redirect('/');
 
     } catch (error) {
         logger.error(`SignUp DB Error: ${error}`);
@@ -70,7 +88,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
                 logger.info(`User logged in successfully: ${user_data.user_id}`);
 
                 res.setHeader('Set-Cookie', cookie);
-                res.json({ message: 'Logged in successfully', user_id: user_data.user_id });
+                res.redirect('/');
 
             } else {
                 logger.error('SignIn Error: Invalid password');
