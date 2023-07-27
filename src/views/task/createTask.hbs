@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <h1>Create Task</h1>
+
+    <form action="/task" method="POST">
+        <div class="mb-3">
+            <label for="task_title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="task_title" name="task_title" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="task_description" class="form-label">Description</label>
+            <textarea class="form-control" id="task_description" name="task_description"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="task_status" class="form-label">Status</label>
+            <select class="form-control" id="task_status" name="task_status" required>
+                <option value="to_do">To Do</option>
+                <option value="in_progress">In Progress</option>
+                <option value="done">Done</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Task</button>
+    </form>
+</div>

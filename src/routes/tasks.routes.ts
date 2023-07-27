@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { createTask, deleteTaskById, getAllTasks, getTaskById, updateTask } from '../controllers/tasks.controller';
+import { createTask, 
+  renderCreateTaskForm, 
+  deleteTaskById,
+  getAllTasks,
+  getTaskById,
+  updateTask,
+} from '../controllers/tasks.controller';
 import { authorizeRoles } from '../middlewares/auth.middleware';
 import UserRole from '../types/public/UserRole';
 
@@ -15,7 +21,14 @@ taskRoutes.route('/')
     createTask
   );
 
-taskRoutes.route('/:task_id')
+  taskRoutes.route('/create')
+  .get(
+    authorizeRoles([UserRole.admin, UserRole.user]),
+    renderCreateTaskForm
+  );
+
+
+  taskRoutes.route('/:task_id')
   .get(
     authorizeRoles([UserRole.admin, UserRole.user, UserRole.guest]),
     getTaskById

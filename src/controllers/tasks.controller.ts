@@ -11,13 +11,13 @@ export const getAllTasks = async (req: Request, res: Response, next: NextFunctio
     try {
         const result = await db.query('SELECT * FROM task;');
         const tasks = result.rows;
-        res.json(tasks);
+        const isAuthenticated = req.user ? true : false;
+        res.render('task/allTasks', { tasks, isAuthenticated });
     } catch (error) {
         logger.error(error);
         next(new AppError(500, 'Internal Server Error'));
     }
 };
-
 
 export const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = taskIdSchema.validate(req.params);
@@ -32,16 +32,17 @@ export const getTaskById = async (req: Request, res: Response, next: NextFunctio
     }
 
     try {
-
         const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
         const task = result.rows[0];
-        res.json(task);
-
+        const isAuthenticated = req.user ? true : false;
+        res.render('task/taskDetail', { task, isAuthenticated });
+    
     } catch (error) {
         logger.error(error);
         next(new AppError(500, 'Internal Server Error'));
     }
 }
+
 
 export const createTask = async (req: Request, res: Response, next: NextFunction) => {
     const { error } = createtaskSchema.validate(req.body);
@@ -122,6 +123,16 @@ export const deleteTaskById = async (req: Request, res: Response, next: NextFunc
 
     } catch (error) {
         logger.error(`Delete Task DB Error: ${error}`);
+        next(new AppError(500, 'Internal Server Error'));
+    }
+}
+
+export const renderCreateTaskForm = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const isAuthenticated = req.user ? true : false;
+        res.render('task/createTask', { isAuthenticated });
+    } catch (error) {
+        logger.error(`Show Create Task Form Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
     }
 }
