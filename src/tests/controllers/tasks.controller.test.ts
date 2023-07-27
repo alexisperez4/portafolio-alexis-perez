@@ -3,8 +3,8 @@ import request, { SuperTest, Test } from 'supertest';
 import app from '../../app';
 import { db } from '../../database/database-config';
 
-const test_user = {
-    user_email: 'test@taskscontroller.com',  // email updated
+const testUser = {
+    user_email: 'test@taskscontroller.com',
     user_password: 'testPassword',
     first_name: 'Test First Name',
     last_name: 'Test Last Name',
@@ -17,29 +17,29 @@ let agent: SuperTest<Test>;
 test.before(async t => {
     agent = request.agent(app);
 
-    await agent.post('/user/signup').send(test_user);
+    await agent.post('/user/signup').send(testUser);
     
     await agent.post('/user/signin').send({
-        user_email: test_user.user_email,
-        user_password: test_user.user_password,
+        user_email: testUser.user_email,
+        user_password: testUser.user_password,
     });
 
 });
 
 test.after.always(async t => {
-    await db.query('DELETE FROM users WHERE user_email = $1', [test_user.user_email]);
+    await db.query('DELETE FROM users WHERE user_email = $1', [testUser.user_email]);
     await agent.post('/user/signout');
 });
 
 test('getAllTasks', async t => {
-    const task_to_generate = {
+    const taskToGenerate = {
         task_title: 'New task',
         task_description: 'Task description used for test',
         task_status: "done"
     };
 
-    const task_generated_1 = await agent.post('/task').send(task_to_generate);
-    const task_generated_2 = await agent.post('/task').send(task_to_generate);
+    const task_generated_1 = await agent.post('/task').send(taskToGenerate);
+    const task_generated_2 = await agent.post('/task').send(taskToGenerate);
 
     const allTasks = await agent.get('/task');
 
@@ -74,12 +74,12 @@ test('createTask', async t => {
 
 
 test('getTaskById', async t => {
-    const task_to_generate = {
+    const taskToGenerate = {
         task_title: 'New task',
         task_description: 'New task description used for test',
         task_status: 'to_do'
     };
-    const task_generated = await agent.post('/task').send(task_to_generate);
+    const task_generated = await agent.post('/task').send(taskToGenerate);
 
     const task = await agent.get(`/task/${task_generated.body.task_id}`);
     t.is(task.status, 200);
@@ -94,12 +94,12 @@ test('getTaskById', async t => {
 
 
 test('updateTask', async t => {
-    const task_to_generate = {
+    const taskToGenerate = {
         task_title: 'New task',
         task_description: 'New task description used for test',
         task_status: 'to_do'
     };
-    const task_generated = await agent.post('/task').send(task_to_generate);
+    const task_generated = await agent.post('/task').send(taskToGenerate);
 
 
     const task_to_update = {
@@ -123,12 +123,12 @@ test('updateTask', async t => {
 
 
 test('deleteTaskByID', async t => {
-    const task_to_generate = {
+    const taskToGenerate = {
         task_title: 'New task',
         task_description: 'New task description used for test',
         task_status: 'to_do'
     };
-    const task_generated = await agent.post('/task').send(task_to_generate);
+    const task_generated = await agent.post('/task').send(taskToGenerate);
 
     const task_to_delete = {
         task_id: task_generated.body.task_id
