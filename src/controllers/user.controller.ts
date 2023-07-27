@@ -70,7 +70,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
                 logger.info(`User logged in successfully: ${user_data.user_id}`);
 
                 res.setHeader('Set-Cookie', cookie);
-                res.json({ message: 'Logged in successfully', user_id: user_data.user_id, token });
+                res.json({ message: 'Logged in successfully', user_id: user_data.user_id });
 
             } else {
                 logger.error('SignIn Error: Invalid password');
@@ -103,6 +103,16 @@ export const showSignUpForm = async (req: Request, res: Response, next: NextFunc
         res.render('user/signup', { title: 'Sign Up' });
     } catch (error) {
         logger.error(`Show SignUp Form Error: ${error}`);
+        next(new AppError(500, 'Internal Server Error'));
+    }
+}
+
+
+export const showSignInForm = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.render('user/signin', { title: 'Sign In' });
+    } catch (error) {
+        logger.error(`Show SignIn Form Error: ${error}`);
         next(new AppError(500, 'Internal Server Error'));
     }
 }
