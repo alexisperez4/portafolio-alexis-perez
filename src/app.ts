@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
 import { engine } from 'express-handlebars';
+import './utils/handlebarsHelpers';
 import path from 'path';
 import { taskRoutes } from './routes/tasks.routes';
 import { userRoutes } from './routes/user.routes';

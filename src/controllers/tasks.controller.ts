@@ -136,3 +136,26 @@ export const renderCreateTaskForm = async (req: Request, res: Response, next: Ne
         next(new AppError(500, 'Internal Server Error'));
     }
 }
+
+export const renderUpdateTaskForm = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.params)
+    const { error } = taskIdSchema.validate(req.params);
+    if (error) {
+        logger.error(error);
+        return next(new AppError(400, error.message));
+    }
+    
+    const { task_id } = req.params;
+    console.log(task_id)
+    try {
+        const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
+        console.log(result.rows)
+        const task = result.rows[0];
+        console.log(task);
+        const isAuthenticated = req.user ? true : false;
+        res.render('task/updateTask', { task, isAuthenticated });
+    } catch (error) {
+        logger.error(`Render Update Task Form Error: ${error}`);
+        next(new AppError(500, 'Internal Server Error'));
+    }
+}
