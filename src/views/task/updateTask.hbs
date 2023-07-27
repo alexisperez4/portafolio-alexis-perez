@@ -1,0 +1,28 @@
+{{#if isAuthenticated}}
+<div class="container mt-4">
+    <h2>Update Task</h2>
+    <form action="/task/{{task.task_id}}?_method=PUT" method="post">
+        <div class="mb-3">
+            <label for="taskTitle" class="form-label">Task Title</label>
+            <input type="text" class="form-control" id="taskTitle" name="task_title" value="{{task.task_title}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="taskDescription" class="form-label">Task Description</label>
+            <textarea class="form-control" id="taskDescription" name="task_description" required>{{task.task_description}}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="taskStatus" class="form-label">Task Status</label>
+            <select class="form-control" id="taskStatus" name="task_status" required>
+                <option value="to_do" {{#if_eq task.task_status 'to_do'}}selected{{/if_eq}}>To Do</option>
+                <option value="in_progress" {{#if_eq task.task_status 'in_progress'}}selected{{/if_eq}}>In Progress</option>
+                <option value="done" {{#if_eq task.task_status 'done'}}selected{{/if_eq}}>Done</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{{else}}
+<div class="container mt-4">
+    <h2>Please log in to update tasks</h2>
+</div>
+{{/if}}

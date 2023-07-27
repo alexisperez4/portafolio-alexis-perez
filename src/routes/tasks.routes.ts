@@ -5,6 +5,7 @@ import { createTask,
   getAllTasks,
   getTaskById,
   updateTask,
+  renderUpdateTaskForm
 } from '../controllers/tasks.controller';
 import { authorizeRoles } from '../middlewares/auth.middleware';
 import UserRole from '../types/public/UserRole';
@@ -39,4 +40,10 @@ taskRoutes.route('/')
   )
   .put(authorizeRoles([UserRole.admin, UserRole.user]),
     updateTask
+  );
+
+  taskRoutes.route('/:task_id/edit')
+  .get(
+    authorizeRoles([UserRole.admin, UserRole.user]),
+    renderUpdateTaskForm
   );
