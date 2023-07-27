@@ -92,12 +92,12 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
 
             } else {
                 logger.error('SignIn Error: Invalid password');
-                next(new AppError(401, 'Invalid password'));
+                next(new AppError(401, 'Invalid email or password'));
             }
 
         } else {
             logger.error('SignIn Error: User not found');
-            next(new AppError(404, 'User not found'));
+            next(new AppError(404, 'Invalid email or password'));
         }
 
     } catch (error) {
