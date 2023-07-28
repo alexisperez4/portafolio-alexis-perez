@@ -62,7 +62,7 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
         );
         const task = result.rows[0];
         logger.info(`Task created successfully: ${task.task_id}`);
-        res.json(task);
+        res.redirect('/task');
 
     } catch (error) {
         logger.error(`Create Task DB Error: ${error}`);
@@ -90,8 +90,9 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
             [task_title, task_description, task_status, task_id]
         );
         const updated_task = result.rows[0];
-        logger.info(`Task updated successfully: ${updated_task.task_id}`);
-        res.json(updated_task);
+        logger.info(`Task updated successfully: ${updated_task.task_id}`);       
+        res.redirect(`/task`);
+
 
     } catch (error) {
         logger.error(`Update Task DB Error: ${error}`);
@@ -119,7 +120,7 @@ export const deleteTaskById = async (req: Request, res: Response, next: NextFunc
         );
         const deleted_task = result.rows[0];
         logger.info(`Task deleted successfully: ${deleted_task.task_id}`);
-        res.json(deleted_task);
+        res.redirect('/task');
 
     } catch (error) {
         logger.error(`Delete Task DB Error: ${error}`);
