@@ -8,6 +8,7 @@ import path from 'path';
 import { taskRoutes } from './routes/tasks.routes';
 import { userRoutes } from './routes/user.routes';
 import { authenticateJWT } from './middlewares/auth.middleware';
+import { homePage } from './controllers/home.controller';
 dotenv.config();
 const app: Express = express();
 
@@ -26,15 +27,8 @@ app.set('views', path.join(__dirname, 'views'));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.get('/', (req, res) => {
-  const isAuthenticated = req.user ? true : false;
-  res.render('home', { 
-    title: 'Portafolio Alexis', 
-    message: 'Welcome to Alexis Portfolio',
-    isAuthenticated
-  });
-});
+// Home Page
+app.get('/', homePage);
 
 // Task Routes
 app.use('/task', taskRoutes);

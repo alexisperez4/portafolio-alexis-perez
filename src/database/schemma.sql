@@ -25,3 +25,8 @@ ALTER TABLE task
 ADD CONSTRAINT task_fk_user_id
 FOREIGN KEY (user_id) 
 REFERENCES users(user_id);
+
+CREATE TABLE homepage (
+    id SERIAL PRIMARY KEY,
+    content TEXT
+);
