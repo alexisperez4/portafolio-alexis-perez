@@ -18,7 +18,7 @@ taskRoutes.route('/')
     getAllTasks
   )
   .post(
-    authorizeRoles([UserRole.admin, UserRole.user]),
+    authorizeRoles([UserRole.admin, UserRole.user, UserRole.guest]),
     createTask
   );
 
