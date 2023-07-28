@@ -9,7 +9,8 @@ import { TaskInitializer } from '../types/public/Task';
 
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await db.query('SELECT * FROM task;');
+        const user_id = req.user.user_id;
+        const result = await db.query('SELECT * FROM task WHERE user_id = $1;', [user_id]);
         const tasks = result.rows;
         const isAuthenticated = req.user ? true : false;
         res.render('task/allTasks', { tasks, isAuthenticated });
@@ -53,12 +54,13 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 
 
     try {
+        const user_id = req.user.user_id;
         const task_data: TaskInitializer = req.body;
         const { task_title, task_description, task_status } = task_data;
 
         const result = await db.query(`
-            INSERT INTO task (task_title, task_description, task_status) 
-            VALUES($1, $2, $3) RETURNING *`, [task_title, task_description, task_status]
+            INSERT INTO task (task_title, task_description, task_status, user_id) 
+            VALUES($1, $2, $3, $4) RETURNING *`, [task_title, task_description, task_status, user_id]
         );
         const task = result.rows[0];
         logger.info(`Task created successfully: ${task.task_id}`);
