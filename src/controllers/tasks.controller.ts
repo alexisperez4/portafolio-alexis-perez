@@ -138,7 +138,6 @@ export const renderCreateTaskForm = async (req: Request, res: Response, next: Ne
 }
 
 export const renderUpdateTaskForm = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.params)
     const { error } = taskIdSchema.validate(req.params);
     if (error) {
         logger.error(error);
@@ -146,12 +145,9 @@ export const renderUpdateTaskForm = async (req: Request, res: Response, next: Ne
     }
     
     const { task_id } = req.params;
-    console.log(task_id)
     try {
         const result = await db.query('SELECT * FROM task WHERE task_id = $1', [task_id]);
-        console.log(result.rows)
         const task = result.rows[0];
-        console.log(task);
         const isAuthenticated = req.user ? true : false;
         res.render('task/updateTask', { task, isAuthenticated });
     } catch (error) {

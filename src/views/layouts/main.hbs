@@ -2,50 +2,55 @@
 <html>
 
 <head>
-  <title>{{ title }}</title>
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap5.min.css">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap5.min.css">
 
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Tasks App like Jira</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {{#unless isAuthenticated}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/signup">Sign Up</a>
+                    </li>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Tasks App like Jira</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          {{#unless isAuthenticated}}
-          <li class="nav-item">
-            <a class="nav-link" href="/user/signup">Sign Up</a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/user/signin">Log In</a>
-          </li>
-          {{/unless}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/signin">Log In</a>
+                    </li>
+                    {{/unless}}
 
-          
-          {{#if isAuthenticated}}
-          <li class="nav-item">
-            <form action="/user/signout" method="post">
-              <button type="submit" class="nav-link">LogOut</button>
-            </form>
-          </li>
-          {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task/create">Create Task</a>
+                    </li>
 
-        </ul>
-      </div>
-    </div>
-  </nav>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task">All Tasks</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form action="/user/signout" method="post">
+                            <button type="submit" class="nav-link">LogOut</button>
+                        </form>
+                    </li>
+                    {{/if}}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 
-
-  {{{body}}}
-  <script src="/js/bootstrap5.bundle.min.js"></script>
+    {{{body}}}
+    <script src="/js/bootstrap5.bundle.min.js"></script>
 </body>
 
 </html>
