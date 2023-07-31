@@ -21,3 +21,6 @@ logs/app.log
 
 # queries
 src/database/queries.sql
+
+# home
+home.hbs
