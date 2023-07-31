@@ -32,3 +32,6 @@ npm run dev
 
 Final Step
 Open [http://localhost:8080/user/signin](http://localhost:8080/user/signin) 
+
+
+Link to [database diagram.](https://dbdiagram.io/d/64ac505102bd1c4a5ed28ffd)
